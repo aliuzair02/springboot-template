@@ -1,7 +1,8 @@
 package org.template.controllers;
 
-import org.template.models.TestModel;
-import org.springframework.http.HttpStatus;
+import org.template.common.models.ResponseObject;
+import org.template.common.services.ObjectServices;
+import org.template.models.TestVO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,11 +12,14 @@ import java.util.Map;
 @RestController
 public class TestController {
 
-    private Map<String, TestModel> test = new HashMap<>();
+    private final ObjectServices objectServices;
 
-    public TestController(){
-        test.put("x1", new TestModel("x1","y1",1));
-        test.put("x2", new TestModel("x2","y2",2));
+    private Map<String, TestVO> test = new HashMap<>();
+
+    public TestController(ObjectServices objectServices){
+        this.objectServices = objectServices;
+        test.put("x1", new TestVO("x1","y1",1));
+        test.put("x2", new TestVO("x2","y2",2));
     }
 
     @GetMapping("/")
@@ -34,25 +38,30 @@ public class TestController {
     }
 
     @GetMapping("/test3")
-    public TestModel test3(){
-        return new TestModel("x","y",10);
+    public TestVO test3(){
+        return new TestVO("x","y",10);
     }
 
     @GetMapping("/test4/{x}")
-    public TestModel test4(@PathVariable("x") String x){
+    public TestVO test4(@PathVariable("x") String x){
         return test.get(x);
     }
 
     @PostMapping("/test5")
-    public void test5(@RequestBody TestModel x){
+    public void test5(@RequestBody TestVO x){
         test.put(x.getX(), x);
     }
 
     // to change response status
     @PostMapping("/test6")
-    public ResponseEntity<HttpStatus> test6(@RequestBody TestModel x){
-        test.put(x.getX(), x);
-        return ResponseEntity.accepted().build();
+    public ResponseEntity<ResponseObject> test6(@RequestBody TestVO testVO) {
+
+        // TODO: will continue on manager part
+        testVO.setStatus(true);
+        testVO.setMessage(null);
+
+        return objectServices.getResponseBody(testVO);
     }
+
 
 }
