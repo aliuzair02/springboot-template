@@ -2,6 +2,7 @@ package org.template.controllers;
 
 import org.template.common.models.ResponseObject;
 import org.template.common.services.ObjectServices;
+import org.template.models.TestRequestObject;
 import org.template.models.TestVO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -54,11 +55,17 @@ public class TestController {
 
     // to change response status
     @PostMapping("/test6")
-    public ResponseEntity<ResponseObject> test6(@RequestBody TestVO testVO) {
+    public ResponseEntity<ResponseObject> test6(@RequestBody TestRequestObject testRequestObject) {
 
         // TODO: will continue on manager part
-        testVO.setStatus(true);
-        testVO.setMessage(null);
+        testRequestObject.setStatus(false);
+        testRequestObject.setMessage(null);
+
+        TestVO testVO = new TestVO();
+
+        ObjectServices.copyProperties(testRequestObject, testVO);
+
+        objectServices.setStatusVO(testVO, true, "Success");
 
         return objectServices.getResponseBody(testVO);
     }

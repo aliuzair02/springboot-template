@@ -2,7 +2,7 @@ package org.template.common.constants;
 
 public class MessageConstants {
 
-    public static final String successMessage = "Process Successfully";
+    public static final String successMessage = "Successfully process your request";
 
 }
 

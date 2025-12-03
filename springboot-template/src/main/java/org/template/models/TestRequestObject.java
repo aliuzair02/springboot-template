@@ -1,19 +1,18 @@
 package org.template.models;
 
-import org.template.common.models.BaseVO;
+import org.template.common.models.RequestObject;
 
-public class TestVO extends BaseVO {
+public class TestRequestObject extends RequestObject {
 
-    private boolean a;
-    private String x;
-    private String y;
-    private int z;
+    String x;
+    String y;
+    int z;
 
-    public TestVO(){
+    public TestRequestObject(){
 
     }
 
-    public TestVO(String x, String y, int z){
+    public TestRequestObject(String x, String y, int z){
         this.x = x;
         this.y = y;
         this.z = z;
@@ -41,13 +40,5 @@ public class TestVO extends BaseVO {
 
     public void setZ(int z) {
         this.z = z;
-    }
-
-    public boolean isA() {
-        return a;
-    }
-
-    public void setA(boolean a) {
-        this.a = a;
     }
 }
