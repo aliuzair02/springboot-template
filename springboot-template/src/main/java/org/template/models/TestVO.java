@@ -4,7 +4,6 @@ import org.template.common.models.BaseVO;
 
 public class TestVO extends BaseVO {
 
-    private boolean a;
     private String x;
     private String y;
     private int z;
@@ -41,13 +40,5 @@ public class TestVO extends BaseVO {
 
     public void setZ(int z) {
         this.z = z;
-    }
-
-    public boolean isA() {
-        return a;
-    }
-
-    public void setA(boolean a) {
-        this.a = a;
     }
 }

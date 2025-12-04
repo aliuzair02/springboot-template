@@ -5,6 +5,6 @@ import org.slf4j.LoggerFactory;
 
 public class BaseManager {
 
-    protected static final Logger logger = LoggerFactory.getLogger(BaseManager.class);
+    protected static final Logger log = LoggerFactory.getLogger(BaseManager.class);
 
 }
