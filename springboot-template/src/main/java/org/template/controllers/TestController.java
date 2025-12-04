@@ -1,7 +1,8 @@
 package org.template.controllers;
 
 import org.template.common.models.ResponseObject;
-import org.template.common.services.ObjectServices;
+import org.template.common.services.ObjectService;
+import org.template.managers.TestManager;
 import org.template.models.TestRequestObject;
 import org.template.models.TestVO;
 import org.springframework.http.ResponseEntity;
@@ -13,12 +14,12 @@ import java.util.Map;
 @RestController
 public class TestController {
 
-    private final ObjectServices objectServices;
+    private final TestManager testManager;
 
     private Map<String, TestVO> test = new HashMap<>();
 
-    public TestController(ObjectServices objectServices){
-        this.objectServices = objectServices;
+    public TestController(TestManager testManager){
+        this.testManager = testManager;
         test.put("x1", new TestVO("x1","y1",1));
         test.put("x2", new TestVO("x2","y2",2));
     }
@@ -57,17 +58,13 @@ public class TestController {
     @PostMapping("/test6")
     public ResponseEntity<ResponseObject> test6(@RequestBody TestRequestObject testRequestObject) {
 
-        // TODO: will continue on manager part
-        testRequestObject.setStatus(false);
-        testRequestObject.setMessage(null);
-
         TestVO testVO = new TestVO();
 
-        ObjectServices.copyProperties(testRequestObject, testVO);
+        ObjectService.copyProperties(testRequestObject, testVO);
 
-        objectServices.setStatusVO(testVO, true, "Success");
+        testManager.doSomething(testVO);
 
-        return objectServices.getResponseBody(testVO);
+        return ObjectService.getResponseBody(testVO);
     }
 
 

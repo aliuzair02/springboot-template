@@ -18,9 +18,9 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-public class ObjectServices extends BaseServices{
+public class ObjectService extends BaseService {
 
-    public <T> ResponseEntity<ResponseObject> getResponseBody(T body) {
+    public static <T> ResponseEntity<ResponseObject> getResponseBody(T body) {
 
         ResponseObject ro = new ResponseObject();
         ro.setStatus(true);
@@ -30,14 +30,14 @@ public class ObjectServices extends BaseServices{
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(ro);
     }
 
-    public <T extends BaseVO> void setStatusVO(T body, boolean status, String message) {
+    public static <T extends BaseVO> void setStatusVO(T body, boolean status, String message) {
 
         body.setStatus(status);
         body.setMessage(message);
 
     }
 
-    public static <T, R> T copyProperties(R fromObject, T toObject){
+    public static <T, R> void copyProperties(R fromObject, T toObject){
 
         if (Objects.nonNull(fromObject) && Objects.nonNull(toObject)){
 
@@ -108,8 +108,6 @@ public class ObjectServices extends BaseServices{
             }
 
         }
-
-        return toObject;
 
     }
 
