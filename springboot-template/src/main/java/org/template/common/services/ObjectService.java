@@ -27,7 +27,7 @@ public class ObjectService extends BaseService {
         ro.setMessage(MessageConstants.successMessage);
         ro.setBody(body);
 
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(ro);
+        return ResponseEntity.status(HttpStatus.OK).body(ro);
     }
 
     public static <T extends BaseVO> void setStatusVO(T body, boolean status, String message) {
