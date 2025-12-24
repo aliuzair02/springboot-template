@@ -67,5 +67,10 @@ public class TestController {
         return ObjectService.getResponseBody(testVO);
     }
 
+    @GetMapping("/test7")
+    public ResponseEntity<ResponseObject> getAllUsers() {
+
+        return ObjectService.getResponseBody(testManager.getAllUsers());
+    }
 
 }
