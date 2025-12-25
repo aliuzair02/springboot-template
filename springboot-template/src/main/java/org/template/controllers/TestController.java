@@ -3,8 +3,8 @@ package org.template.controllers;
 import org.template.common.models.ResponseObject;
 import org.template.common.services.ObjectService;
 import org.template.managers.TestManager;
-import org.template.models.TestRequestObject;
-import org.template.models.TestVO;
+import org.template.managers.UserManager;
+import org.template.models.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,11 +15,13 @@ import java.util.Map;
 public class TestController {
 
     private final TestManager testManager;
+    private final UserManager userManager;
 
     private Map<String, TestVO> test = new HashMap<>();
 
-    public TestController(TestManager testManager){
+    public TestController(TestManager testManager, UserManager userManager){
         this.testManager = testManager;
+        this.userManager = userManager;
         test.put("x1", new TestVO("x1","y1",1));
         test.put("x2", new TestVO("x2","y2",2));
     }
@@ -68,9 +70,23 @@ public class TestController {
     }
 
     @GetMapping("/test7")
-    public ResponseEntity<ResponseObject> getAllUsers() {
+    public ResponseEntity<ResponseObject> test7() {
 
-        return ObjectService.getResponseBody(testManager.getAllUsers());
+        return ObjectService.getResponseBody(userManager.getAllUsers());
+    }
+
+    @PostMapping("/test8")
+    public ResponseEntity<ResponseObject> test8(@RequestBody UserRequestObject userRequestObject) {
+
+        UserDO userDO = new UserDO();
+
+        ObjectService.copyProperties(userRequestObject, userDO);
+
+        UserVO userVO = new UserVO(userDO);
+
+        userManager.saveNewUser(userVO);
+
+        return ObjectService.getResponseBody(userVO);
     }
 
 }

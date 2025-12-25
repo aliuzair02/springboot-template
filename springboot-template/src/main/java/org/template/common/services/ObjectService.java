@@ -20,9 +20,18 @@ import java.util.Objects;
 @Service
 public class ObjectService extends BaseService {
 
-    public static <T> ResponseEntity<ResponseObject> getResponseBody(T body) {
+    public static <T extends BaseVO> ResponseEntity<ResponseObject> getResponseBody(T body) {
 
         ResponseObject ro = new ResponseObject();
+
+        if (!body.isStatus()) {
+            ro.setStatus(false);
+            ro.setMessage(body.getMessage());
+            ro.setBody(body);
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ro);
+        }
+
         ro.setStatus(true);
         ro.setMessage(MessageConstants.successMessage);
         ro.setBody(body);

@@ -6,7 +6,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.template.models.TestUserDO;
+import org.template.models.UserDO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,13 +25,13 @@ public class DbTestController {
     }
 
     @GetMapping("/users")
-    public List<TestUserDO> getAllUsers() {
+    public List<UserDO> getAllUsers() {
         String sql = "SELECT id, username, email, password FROM users";
 
-        return jdbcTemplate.query(sql, new RowMapper<TestUserDO>() {
+        return jdbcTemplate.query(sql, new RowMapper<UserDO>() {
             @Override
-            public TestUserDO mapRow(ResultSet rs, int rowNum) throws SQLException {
-                return new TestUserDO(
+            public UserDO mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return new UserDO(
                         rs.getLong("id"),
                         rs.getString("username"),
                         rs.getString("email"),

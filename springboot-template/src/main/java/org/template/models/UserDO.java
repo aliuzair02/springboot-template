@@ -1,15 +1,18 @@
 package org.template.models;
 
-public class TestUserDO {
+import org.template.common.models.BaseDO;
+
+public class UserDO extends BaseDO {
+
     private Long id;
     private String username;
     private String email;
     private String password;
 
     // Constructors
-    public TestUserDO() {}
+    public UserDO() {}
 
-    public TestUserDO(Long id, String username, String email, String password) {
+    public UserDO(Long id, String username, String email, String password) {
         this.id = id;
         this.username = username;
         this.email = email;
