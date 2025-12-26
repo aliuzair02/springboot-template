@@ -69,24 +69,4 @@ public class TestController {
         return ObjectService.getResponseBody(testVO);
     }
 
-    @GetMapping("/test7")
-    public ResponseEntity<ResponseObject> test7() {
-
-        return ObjectService.getResponseBody(userManager.getAllUsers());
-    }
-
-    @PostMapping("/test8")
-    public ResponseEntity<ResponseObject> test8(@RequestBody UserRequestObject userRequestObject) {
-
-        UserDO userDO = new UserDO();
-
-        ObjectService.copyProperties(userRequestObject, userDO);
-
-        UserVO userVO = new UserVO(userDO);
-
-        userManager.saveNewUser(userVO);
-
-        return ObjectService.getResponseBody(userVO);
-    }
-
 }

@@ -15,20 +15,6 @@ public class UserManager extends BaseManager {
         this.userService = userService;
     }
 
-    public UserVO getAllUsers(){
-
-        log.info("Process getAllUsers Started");
-
-        UserVO userVO =  userService.getAllUsersFromDB();
-
-        ObjectService.setStatusVO(userVO, true, "Success");
-
-        log.info("Process getAllUsers Ended");
-
-        return userVO;
-
-    }
-
     public void saveNewUser(UserVO userVO){
 
         try{
@@ -41,6 +27,20 @@ public class UserManager extends BaseManager {
             log.error(e.getMessage());
             ObjectService.setStatusVO(userVO, false, e.getMessage());
         }
+
+    }
+
+    public UserVO getAllUsers(){
+
+        log.info("Process getAllUsers Started");
+
+        UserVO userVO =  userService.getAllUsers();
+
+        ObjectService.setStatusVO(userVO, true, "Successfully get all user");
+
+        log.info("Process getAllUsers Ended");
+
+        return userVO;
 
     }
 

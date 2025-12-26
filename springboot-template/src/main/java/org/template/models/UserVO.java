@@ -14,6 +14,10 @@ public class UserVO extends BaseVO {
         this.userDO = userDO;
     }
 
+    public UserVO(List<UserDO> userDOList) {
+        this.userDOList = userDOList;
+    }
+
     public List<UserDO> getUserDOList() {
         return userDOList;
     }

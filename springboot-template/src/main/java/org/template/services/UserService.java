@@ -1,45 +1,26 @@
 package org.template.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.template.common.services.BaseService;
 import org.template.common.services.ObjectService;
+import org.template.dao.UserDaoJpa;
 import org.template.models.UserDO;
 import org.template.models.UserVO;
 
-import java.util.List;
-import java.util.Objects;
 
 @Service
 public class UserService extends BaseService {
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private final UserDaoJpa userDaoJpa;
 
-    public UserService(){
-
+    public UserService(UserDaoJpa userDaoJpa){
+        this.userDaoJpa = userDaoJpa;
     }
 
-    public UserVO getAllUsersFromDB() {
+    public UserVO getAllUsers() {
 
-        String sql = "SELECT id, username, email, password FROM users";
+        return userDaoJpa.getAllUser();
 
-        UserVO userVO = new UserVO();
-
-        List<UserDO> userDOList = jdbcTemplate.query(sql, (rs, rowNum) -> new UserDO(
-                rs.getLong("id"),
-                rs.getString("username"),
-                rs.getString("email"),
-                rs.getString("password")
-        ));
-
-        userVO.setUserDOList(userDOList);
-        userVO.setUserDO(
-                userDOList.stream().findFirst().orElse(new UserDO())
-        );
-
-        return userVO;
     }
 
     public void saveNewUser(UserVO userVO) {
