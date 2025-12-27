@@ -1,6 +1,7 @@
 package org.template.managers;
 
 import org.springframework.stereotype.Service;
+import org.template.common.constants.MessageConstants;
 import org.template.common.managers.BaseManager;
 import org.template.common.services.ObjectService;
 import org.template.models.UserVO;
@@ -15,32 +16,59 @@ public class UserManager extends BaseManager {
         this.userService = userService;
     }
 
-    public void saveNewUser(UserVO userVO){
+    public void saveUser(UserVO userVO){
+
+        generateLogId();
 
         try{
-            log.info("Process saveNewUser Started");
 
-            userService.saveNewUser(userVO);
+            infoLog("Process saveUser Started");
 
-            log.info("Process saveNewUser Ended");
+            userService.saveUser(userVO);
+
+            ObjectService.setStatusVO(userVO, true, MessageConstants.successMessage);
+
+            infoLog("Process saveUser Ended");
+
         } catch (Exception e) {
-            log.error(e.getMessage());
-            ObjectService.setStatusVO(userVO, false, e.getMessage());
+            errorLog(e.getMessage());
+            ObjectService.setStatusVO(userVO, false, ObjectService.getErrorMessage(e));
         }
 
     }
 
     public UserVO getAllUsers(){
 
-        log.info("Process getAllUsers Started");
+        infoLog("Process getAllUsers Started");
 
         UserVO userVO =  userService.getAllUsers();
 
-        ObjectService.setStatusVO(userVO, true, "Successfully get all user");
+        ObjectService.setStatusVO(userVO, true, MessageConstants.successMessage);
 
-        log.info("Process getAllUsers Ended");
+        infoLog("Process getAllUsers Ended");
 
         return userVO;
+
+    }
+
+    public void deleteUser(UserVO userVO){
+
+        generateLogId();
+
+        try{
+
+            infoLog("Process deleteUser Started");
+
+            userService.deleteUser(userVO);
+
+            ObjectService.setStatusVO(userVO, true, MessageConstants.successMessage);
+
+            infoLog("Process deleteUser Ended");
+
+        } catch (Exception e) {
+            errorLog(e.getMessage());
+            ObjectService.setStatusVO(userVO, false, ObjectService.getErrorMessage(e));
+        }
 
     }
 

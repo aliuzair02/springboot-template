@@ -2,10 +2,12 @@ package org.template.services;
 
 import org.springframework.stereotype.Service;
 import org.template.common.services.BaseService;
-import org.template.common.services.ObjectService;
 import org.template.dao.UserDaoJpa;
 import org.template.models.UserDO;
 import org.template.models.UserVO;
+import org.template.tables.TbUser;
+
+import java.util.Objects;
 
 
 @Service
@@ -23,40 +25,53 @@ public class UserService extends BaseService {
 
     }
 
-    public void saveNewUser(UserVO userVO) {
+    public void saveUser(UserVO userVO) throws Exception {
+
+        // Step 0 - null checking
+        if (Objects.isNull(userVO) || Objects.isNull(userVO.getUserDO())) {
+            return;
+        }
 
         UserDO userDO = userVO.getUserDO();
 
-        // Check if username already exists
-        String checkSql = "SELECT COUNT(*) FROM users WHERE username = ?";
-        Integer count = jdbcTemplate.queryForObject(
-                checkSql,
-                Integer.class,
-                userDO.getUsername()
-        );
+        // Step 1 - set entity
+        TbUser tbUser = new TbUser();
+        tbUser.setId(userDO.getId());
+        tbUser.setUsername(userDO.getUsername());
+        tbUser.setPassword(userDO.getPassword());
+        tbUser.setEmail(userDO.getEmail());
 
-        if (count > 0) {
-            ObjectService.setStatusVO(userVO, false, "Username already exists");
-            throw new RuntimeException("Username already exists");
-        }
-
-        // Insert new user
-        String insertSql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
-
-        int rows = jdbcTemplate.update(
-                insertSql,
-                userDO.getUsername(),
-                userDO.getEmail(),
-                userDO.getPassword()
-        );
-
-        if (rows > 0) {
-            ObjectService.setStatusVO(userVO, true, "Successfully create new user");
+        // Step 2 - save or update
+        if (Objects.isNull(tbUser.getId())) {
+            userDaoJpa.save(tbUser);
         } else {
-            ObjectService.setStatusVO(userVO, false, "Failed create new user");
+            if (Objects.isNull(userDaoJpa.getById(TbUser.class, userDO.getId()))) {
+                throw new Exception("User id not exist");
+            }
+            userDaoJpa.update(tbUser);
         }
+
     }
 
+    public void deleteUser(UserVO userVO) {
 
+        // Step 0 - null checking
+        if (Objects.isNull(userVO) || Objects.isNull(userVO.getUserDO())) {
+            return;
+        }
+
+        UserDO userDO = userVO.getUserDO();
+
+        // Step 1 - set entity
+        TbUser tbUser = new TbUser();
+        tbUser.setId(userDO.getId());
+        tbUser.setUsername(userDO.getUsername());
+        tbUser.setPassword(userDO.getPassword());
+        tbUser.setEmail(userDO.getEmail());
+
+        // Step 3 - delete
+        userDaoJpa.delete(tbUser);
+
+    }
 
 }
