@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class ObjectService extends BaseService {
@@ -23,18 +25,15 @@ public class ObjectService extends BaseService {
     public static <T extends BaseVO> ResponseEntity<ResponseObject> getResponseBody(T body) {
 
         ResponseObject ro = new ResponseObject();
+        ro.setBody(body);
+        ro.setLogId(logId);
+        ro.setStatus(body.isStatus());
 
         if (!body.isStatus()) {
-            ro.setStatus(false);
             ro.setMessage(body.getMessage());
-            ro.setBody(body);
-
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ro);
         }
-
-        ro.setStatus(true);
         ro.setMessage(MessageConstants.successMessage);
-        ro.setBody(body);
 
         return ResponseEntity.status(HttpStatus.OK).body(ro);
     }
@@ -43,6 +42,7 @@ public class ObjectService extends BaseService {
 
         body.setStatus(status);
         body.setMessage(message);
+        body.setLogId(logId);
 
     }
 
@@ -162,6 +162,22 @@ public class ObjectService extends BaseService {
 
         return field;
 
+    }
+
+    public static String getErrorMessage(Exception e){
+        String str1 = e.getMessage();
+
+        if (str1.contains("Duplicate")) {
+            Pattern pattern = Pattern.compile("constraint\\s*\\[[^_]+_[^_]+_(.+?)]");
+            Matcher matcher = pattern.matcher(str1);
+
+            if (matcher.find()) {
+                return "Duplicate record for " + matcher.group(1);
+            }
+
+        }
+
+        return str1;
     }
 
 }

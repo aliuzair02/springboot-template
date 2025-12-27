@@ -3,6 +3,8 @@ package org.template.dao;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -39,20 +41,12 @@ public class DaoJpa implements BaseDao {
 
     @Override
     public void save(Object obj) {
-        try {
-            this.entityManager.persist(obj);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        this.entityManager.persist(obj);
     }
 
     @Override
     public void update(Object obj) {
-        try {
-            this.entityManager.merge(obj);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        this.entityManager.merge(obj);
     }
 
     @Override
